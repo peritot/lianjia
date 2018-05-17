@@ -15,8 +15,10 @@ class LianjiaItem(scrapy.Item):
 
 
 class RentItem(scrapy.Item):
-    # 标签 城区 小区 户型 面积 价格 链接 时间 链接 经纬度
+    # 标识 标签 城区 小区 户型 面积 价格 链接 时间 链接 经纬度
+    id = scrapy.Field()
     title = scrapy.Field()
+    district = scrapy.Field()
     community = scrapy.Field()
     zone = scrapy.Field()
     area = scrapy.Field()
@@ -24,6 +26,5 @@ class RentItem(scrapy.Item):
     time = scrapy.Field()
     link = scrapy.Field()
     zip = scrapy.Field()
-    district = scrapy.Field()
     longitude = scrapy.Field()
     latitude = scrapy.Field()
