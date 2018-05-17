@@ -3,6 +3,7 @@ import scrapy
 import requests
 import time
 import re
+from scrapy import log
 
 from lianjia import properties
 from lianjia.items import RentItem
@@ -28,7 +29,7 @@ class RentSpider(scrapy.Spider):
         try:
             response = requests.get(PROXY_POOL_URL)
             if response.status_code == 200:
-                print('Using proxy: ' + str(response.text))
+                log('Using proxy: ' + str(response.text))
                 return response.text
         except ConnectionError:
             return ''
@@ -40,7 +41,7 @@ class RentSpider(scrapy.Spider):
                 proxy = self.get_proxy()
                 yield scrapy.Request(href, callback=self.parse_district, meta={'proxy': proxy})
             except Exception as error:
-                print(error)
+                log(error)
 
     def parse_district(self, response):
         for href in response.css('#filter-options dd[data-index="0"] .sub-option-list a[class!="on"]::attr(href)').extract():
@@ -49,7 +50,7 @@ class RentSpider(scrapy.Spider):
                 proxy = response.meta['proxy']
                 yield scrapy.Request(href, callback=self.parse_street, meta={'proxy': proxy})
             except Exception as error:
-                print(error)
+                log(error)
 
     def parse_street(self, response):
         try:
@@ -58,11 +59,11 @@ class RentSpider(scrapy.Spider):
             pgdict = eval(pgdata)
             total = pgdict['totalPage']
             for pg in (1, total):
-                href = url.replace('/{page/}', str(pg))
+                href = url.replace('{page}', str(pg))
                 proxy = self.get_proxy()
                 yield scrapy.Request(href, callback=self.parse_pg, meta={'proxy': proxy})
         except Exception as error:
-            print(error)
+            log(error)
 
     def parse_pg(self, response):
         for li in response.css('#house-lst li'):
@@ -91,7 +92,7 @@ class RentSpider(scrapy.Spider):
                 proxy = response.meta['proxy']
                 yield scrapy.Request(link, callback=self.parse_detail, meta={'proxy': proxy, 'item': item})
             except Exception as error:
-                print(error)
+                log(error)
 
     def parse_detail(self, response):
         item = response.meta['item']
