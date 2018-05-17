@@ -8,18 +8,18 @@
 import pymysql
 from scrapy import log
 
-from lianjia import settings
+from lianjia import properties
 from lianjia.items import RentItem
 
 
 class LianjiaPipeline(object):
     def __init__(self):
         self.connect = pymysql.connect(
-            host=settings.MYSQL_HOST,
-            port=settings.MYSQL_PORT,
-            user=settings.MYSQL_USER,
-            password=settings.MYSQL_PASSWORD,
-            db=settings.MYSQL_DB,
+            host=properties.MYSQL_HOST,
+            port=properties.MYSQL_PORT,
+            user=properties.MYSQL_USER,
+            password=properties.MYSQL_PASSWORD,
+            db=properties.MYSQL_DB,
             use_unicode=True,
             charset='utf8'
         )
