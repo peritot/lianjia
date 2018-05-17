@@ -29,7 +29,7 @@ class RentSpider(scrapy.Spider):
         try:
             response = requests.get(PROXY_POOL_URL)
             if response.status_code == 200:
-                print('Using proxy: ' + str(proxy))
+                print('Using proxy: ' + str(response.text))
                 return response.text
         except ConnectionError:
             return ''
