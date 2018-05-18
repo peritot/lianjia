@@ -58,7 +58,7 @@ class RentSpider(scrapy.Spider):
             pgdata = response.css('.house-lst-page-box::attr(page-data)').extract()[0].strip()
             pgdict = eval(pgdata)
             total = pgdict['totalPage']
-            for pg in (1, total):
+            for pg in range(1, total):
                 href = url.replace('{page}', str(pg))
                 proxy = self.get_proxy()
                 yield scrapy.Request(href, callback=self.parse_pg, meta={'proxy': proxy})
